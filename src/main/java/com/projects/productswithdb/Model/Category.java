@@ -1,7 +1,11 @@
 package com.projects.productswithdb.Model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+
 import lombok.*;
 
 import java.util.List;
@@ -15,6 +19,13 @@ import java.util.List;
 
 public class Category extends BaseModel{
     private String name;
-//    @OneToMany (mappedBy ="category")
-//    private List<Product> productList;
+
+  @OneToMany (mappedBy ="category",fetch = FetchType.LAZY)
+  @JsonIgnore
+  private List<Product> productList;
+
+  public Category(String name)
+  {
+      this.name=name;
+  }
 }

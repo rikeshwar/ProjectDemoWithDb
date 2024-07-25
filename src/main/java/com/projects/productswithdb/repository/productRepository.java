@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface productRepository extends JpaRepository<Product,Long> {
@@ -25,8 +26,10 @@ public interface productRepository extends JpaRepository<Product,Long> {
 
 
 
-    //Product findProductById(long id);
-    Product getProductsById(long id);
+
+
+    Optional<Product> findProductById(long id);
+    Optional<Product> getProductsById(long id);
 
 
     //Product deleteProductById(long id);

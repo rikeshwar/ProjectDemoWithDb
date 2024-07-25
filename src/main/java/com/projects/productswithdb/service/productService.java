@@ -3,6 +3,7 @@ package com.projects.productswithdb.service;
 import com.projects.productswithdb.Model.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface productService {
     //product createProduct(productPostRequestDto productPostRequestDto);

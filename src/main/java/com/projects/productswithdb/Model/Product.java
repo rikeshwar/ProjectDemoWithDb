@@ -1,8 +1,6 @@
 package com.projects.productswithdb.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -28,6 +26,7 @@ public class Product extends BaseModel {
     private  String description;
 
     @ManyToOne
+    @JoinColumn(name="category_id")
     private Category category;
 
 }
