@@ -1,8 +1,25 @@
 package com.projects.productswithdb.exception;
 
-public class ErrorException extends RuntimeException{
-    public ErrorException(String message)
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Setter;
+
+
+
+
+public class ErrorException {
+    private String message;
+
+
+
+    @Override
+    public String toString() {
+        return "ErrorException{" +
+                "message='" + message + '\'' +
+                '}';
+    }
+        public ErrorException(String message)
     {
-        super(message);
+        this.message=message;
     }
 }

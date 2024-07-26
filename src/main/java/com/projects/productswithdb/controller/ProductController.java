@@ -2,6 +2,7 @@ package com.projects.productswithdb.controller;
 
 
 import com.projects.productswithdb.Model.Product;
+import com.projects.productswithdb.exception.CategoryNotFoundException;
 import com.projects.productswithdb.service.productService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class ProductController {
         return productService.getProductById(id);
     }
     @GetMapping("/productsByCategory")
-    public List<Product> getProductByCategory(@RequestParam("catName") String catName)
+    public List<Product> getProductByCategory(@RequestParam("catName") String catName) throws CategoryNotFoundException
     {
         return productService.getProductsByCategory(catName);
     }
