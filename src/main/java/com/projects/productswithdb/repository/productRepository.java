@@ -43,9 +43,11 @@ public interface productRepository extends JpaRepository<Product,Long> {
                //@Param here the map catNmae to categoryNmae and same exact
       //"categoryName" should ne used in Hql after where clause
 
-    @Query(value = "select p.* from Product p left join category c on p.category_id=c.id where c.name= :categoryName order by p.name",nativeQuery = true)
+    //@Query(value = "select p.* from Product p left join category c on p.category_id=c.id where c.name= :categoryName order by p.name",nativeQuery = true)
+    //List<Product> getproductwithgivenCategoryBySql(@Param("categoryName") String catName);//this is having
+    //flaw as on implementing soft delete it will still fetch product where is_Deleted=true
+    @Query(value = "select p.* from Product p left join category c on p.category_id=c.id where c.name= :categoryName and p.is_deleted=false order by p.name",nativeQuery = true)
     List<Product> getproductwithgivenCategoryBySql(@Param("categoryName") String catName);
-
     @Query(value="select * from product p",nativeQuery = true)
     List<ProductProjection> getProductUsingProjectionBySql();
 
