@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Setter;
 
-
+@Setter
 
 
 public class ErrorException {
@@ -12,13 +12,13 @@ public class ErrorException {
 
 
 
-    @Override
-    public String toString() {
-        return "ErrorException{" +
-                "message='" + message + '\'' +
-                '}';
-    }
-        public ErrorException(String message)
+//    @Override
+//    public String toString() {
+//        return "ErrorException{" +
+//                "message='" + message + '\'' +
+//                '}';
+//    }
+    public ErrorException(String message)
     {
         this.message=message;
     }

@@ -26,13 +26,14 @@ public class GlobalControllerAdvice {
     {
         ErrorException errorException=new ErrorException(e.getMessage());
         return new ResponseEntity<>(errorException, HttpStatusCode.valueOf(404));
+        //return errorException;
 
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorException> handleGeneralException(Exception e)
-    {
-        ErrorException errorException=new ErrorException(e.getMessage());
-        return new ResponseEntity<>(errorException, HttpStatus.NOT_FOUND);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorException> handleGeneralException(Exception e)
+//    {
+//        ErrorException errorException=new ErrorException(e.getMessage());
+//        return new ResponseEntity<>(errorException, HttpStatus.NOT_FOUND);
+//    }
 
 }

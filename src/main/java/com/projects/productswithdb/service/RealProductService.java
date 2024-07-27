@@ -31,13 +31,16 @@ public class RealProductService implements productService{
 //        if(categoryRepository.findByName(product.getCategory().getName())==null)
 //            categoryRepository.save(product.getCategory());
 //        return productRepository.save(product);
-        Category category = categoryRepository.findByName(product.getCategory().getName());
-        if (category == null) {
-            category = new Category();
-            category.setName(product.getCategory().getName());
-            categoryRepository.save(category);
-        }
-        product.setCategory(category);
+        Optional<Category> category = categoryRepository.findByName(product.getCategory().getName());
+//        if (category == null) {
+//            category = new Category();
+//            category.setName(product.getCategory().getName());
+//            categoryRepository.save(category);
+//        }
+        if(category.isEmpty())
+            product.setCategory(categoryRepository.save(new Category(product.getCategory().getName())));
+
+        product.setCategory(category.get());
         return productRepository.save(product);
 
 
@@ -73,15 +76,25 @@ public class RealProductService implements productService{
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Category category = categoryRepository.findByName(product.getCategory().getName());
-        if (category == null) {
-            category = new Category();
-            category.setName(product.getCategory().getName());
-            categoryRepository.save(category);
+    public Product updateProduct(Product product) throws ProductNotFoundException {
+        Optional<Product> productOptional=productRepository.getProductsById(product.getId());
+        if(productOptional.isEmpty())
+            throw new ProductNotFoundException("there is no product to update with id " +
+                    product.getId()+" if u wish to create new product call post Request");
+        Optional<Category> category = categoryRepository.findByName(product.getCategory().getName());
+//        if (category == null) {
+//            category = new Category();
+//            category.setName(product.getCategory().getName());
+//            categoryRepository.save(category);
+//        }
+        Category newCategory=null;
+        if(category.isEmpty()) {
+            newCategory = new Category(product.getCategory().getName());
+            newCategory=categoryRepository.save(newCategory);
+
         }
-        product.setCategory(category);
-        //here line 63 to 69 code required because what if you update the
+        product.setCategory(newCategory);
+        //here line 78 to 81 code required because what if you update the
         //category which is a class type data and need to handled seperately
         //there is two either you tell the jpa to handle it by "CASCADING"
         //or you handle it by yourself....!!here we did ourself
@@ -94,21 +107,24 @@ public class RealProductService implements productService{
     public Product updateSpecificField(Product product) throws ProductNotFoundException {
         Optional<Product> productFromDb=productRepository.getProductsById(product.getId());
         if(productFromDb.isEmpty())throw new ProductNotFoundException("there is no such product to update");
-        if(productFromDb.get().getCategory()!=null)
+        if(product.getCategory()!=null)
         {
-            Category category=categoryRepository.findByName(product.getCategory().getName());
-            if(category==null) {
-                category = new Category(product.getCategory().getName());
-                categoryRepository.save(category);
-            }
-            productFromDb.get().setCategory(category);
+            Optional<Category> categoryFromDb;
+            //if(product.getCategory().getName()!=null)
+            categoryFromDb=categoryRepository.findByName(product.getCategory().getName());
+            //if(product.getCategory().getId()!=null)
+            //    categoryFromDb=categoryRepository.findById(product.getCategory().getId());
+            if(categoryFromDb.isEmpty())
+                productFromDb.get().setCategory(categoryRepository.save(product.getCategory()));
+
+
 
         }
-        if(productFromDb.get().getName()!=null)productFromDb.get().setName(product.getName());
-        if(productFromDb.get().getDescription()!=null)productFromDb.get().setDescription(product.getDescription());
+        if(product.getName()!=null)productFromDb.get().setName(product.getName());
+        if(product.getDescription()!=null)productFromDb.get().setDescription(product.getDescription());
         //if(product.getPrice()!=null)productFromDb.setPrice(product.getPrice());
         //in model doule used of primitive datatype hence here null is not working
-        if(productFromDb.get().getPrice()!=null)productFromDb.get().setPrice(product.getPrice());
+        if(product.getPrice()!=null)productFromDb.get().setPrice(product.getPrice());
 
         return productRepository.save(productFromDb.get());
 
