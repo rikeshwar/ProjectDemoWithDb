@@ -39,8 +39,7 @@ public class RealProductService implements productService{
 //        }
         if(category.isEmpty())
             product.setCategory(categoryRepository.save(new Category(product.getCategory().getName())));
-
-        product.setCategory(category.get());
+        else product.setCategory(category.get());
         return productRepository.save(product);
 
 
